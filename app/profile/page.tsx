@@ -24,6 +24,7 @@ export default function Profile() {
     atStudent: false,
   })
   const [iban, setIban] = useState("")
+  const [availability, setAvailability] = useState<string[]>([])
   const router = useRouter()
 
   useEffect(() => {
@@ -49,8 +50,24 @@ export default function Profile() {
         atStudent: user.teachingLocations?.includes("chez_apprenant") || false,
       })
       setIban(user.iban || "")
+      setAvailability(user.availability || [])
     }
   }, [])
+
+  const handleAddAvailability = () => {
+    const currentDateTime = new Date().toISOString().slice(0, 16)
+    setAvailability([...availability, currentDateTime])
+  }
+
+  const handleRemoveAvailability = (index: number) => {
+    setAvailability(availability.filter((_, i) => i !== index))
+  }
+
+  const handleAvailabilityChange = (index: number, value: string) => {
+    const newAvailability = [...availability]
+    newAvailability[index] = value
+    setAvailability(newAvailability)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -67,20 +84,21 @@ export default function Profile() {
     if (courseLocation.atTeacher) teachingLocations.push("chez_formateur")
     if (courseLocation.atStudent) teachingLocations.push("chez_apprenant")
 
-    const data = { 
-      email, 
-      firstName, 
-      lastName, 
-      about, 
-      experience, 
-      userType, 
-      phoneNumber, 
-      domain, 
-      address: { street, city, postalCode, country }, 
-      hourlyRate, 
-      teachingLocations, 
+    const data = {
+      email,
+      firstName,
+      lastName,
+      about,
+      experience,
+      userType,
+      phoneNumber,
+      domain,
+      address: { street, city, postalCode, country },
+      hourlyRate,
+      teachingLocations,
       iban,
-      photo
+      photo,
+      availability
     }
 
     try {
@@ -224,8 +242,31 @@ export default function Profile() {
               onChange={(e) => setHourlyRate(e.target.value)}
               className="w-full px-3 py-2 mb-3 text-base leading-tight text-gray-700 border border-neutral-200 rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:border-neutral-800"
             />
+            {availability.map((date, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <input
+                  type="datetime-local"
+                  value={new Date(date).toISOString().slice(0, 16)}
+                  onChange={(e) => handleAvailabilityChange(index, e.target.value)}
+                  className="w-full px-3 py-2 text-base leading-tight text-gray-700 border border-neutral-200 rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:border-neutral-800"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveAvailability(index)}
+                  className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                >
+                  Supprimer
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={handleAddAvailability}
+              className="mb-3 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Ajouter une disponibilité
+            </button>
             <div className="mb-3">
-              {console.log(courseLocation)}
               <label className="block text-gray-700 text-sm font-bold mb-2">Lieu de cours</label>
               <div>
                 <label className="inline-flex items-center">
