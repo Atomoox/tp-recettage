@@ -73,7 +73,7 @@ export default function Search() {
           className={`px-4 py-2 font-bold rounded ${
             mode === "fast" ? "bg-blue-500 text-white" : "bg-gray-200"
           }`}
-          onClick={() => setMode("fast")}
+          onClick={() => handleSwitch("fast")}
         >
           Mode Rapide
         </button>
