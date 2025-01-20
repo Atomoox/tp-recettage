@@ -23,6 +23,7 @@ export default function Login() {
       if (response.ok) {
         const userData = await response.json()
         console.log("Login successful:", userData)
+        localStorage.setItem("user", JSON.stringify(userData));
         router.push("/dashboard")
       } else {
         const errorData = await response.json()

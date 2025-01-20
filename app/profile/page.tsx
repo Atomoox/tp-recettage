@@ -1,15 +1,23 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function Profile() {
   const [about, setAbout] = useState("")
   const [experience, setExperience] = useState("")
   const [userType, setUserType] = useState("")
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const userId = "678e227f2f722cfd96a032a8"
+    const user = JSON.parse(localStorage.getItem("user") || "{}")
+    const userId = user._id
+    if (!userId) {
+      console.error("User ID not found, make sure to login first")
+      router.push("/login") // Redirect to login page
+      return
+    }
     const data = { about, experience, userType }
   
     try {
