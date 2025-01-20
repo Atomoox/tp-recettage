@@ -10,6 +10,11 @@ export default function Login() {
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
+
+    if(email === "" || password === ""){
+      setError("Veuillez remplir tous les champs")
+      return
+    }
     e.preventDefault()
     setError("")
 
@@ -26,7 +31,7 @@ export default function Login() {
         router.push("/dashboard")
       } else {
         const errorData = await response.json()
-        setError(errorData.error || "An error occurred during login")
+        setError("Email ou mot de passe incorrect, veuillez réessayer")
       }
     } catch (error) {
       console.error("Login error:", error)
