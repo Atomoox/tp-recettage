@@ -11,6 +11,13 @@ db.users.insertOne({
     about: "Je suis un formateur passionné avec 5 ans d'expérience dans le domaine du développement web.",
     experience: "5 ans d'expérience en développement web, spécialisé en JavaScript et React.",
     phoneNumber: "+33 6 12 34 56 78",
+    domain: "informatique",
+    address: {
+      "street": "123 Rue de la Paix",
+      "city": "Paris",
+      "postalCode" :"75001",
+      "country" : "France"
+    },
     address: "123 Rue de la Paix, 75001 Paris, France",
     userType: "formateur",
     profilePicture: "https://example.com/profile-pictures/jean-dupont.jpg",

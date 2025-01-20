@@ -7,10 +7,29 @@ export default function Profile() {
   const [experience, setExperience] = useState("")
   const [userType, setUserType] = useState("")
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Ici, vous ajouteriez la logique pour sauvegarder le profil
-    console.log("Profil mis à jour:", { about, experience, userType })
+    const userId = "678e227f2f722cfd96a032a8"
+    const data = { about, experience, userType }
+  
+    try {
+      const response = await fetch(`/api/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+  
+      if (!response.ok) {
+        throw new Error("Failed to update profile")
+      }
+  
+      const updatedUser = await response.json()
+      console.log("Profil mis à jour:", updatedUser)
+    } catch (error) {
+      console.error("Error updating profile:", error)
+    }
   }
 
   return (
