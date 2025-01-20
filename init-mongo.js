@@ -18,7 +18,6 @@ db.users.insertOne({
       "postalCode" :"75001",
       "country" : "France"
     },
-    address: "123 Rue de la Paix, 75001 Paris, France",
     userType: "formateur",
     profilePicture: "https://example.com/profile-pictures/jean-dupont.jpg",
     availability: [
